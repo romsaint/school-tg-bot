@@ -1,6 +1,5 @@
 import TgBot from 'node-telegram-bot-api'
 import dotenv from 'dotenv'
-import { constBtns } from './commands/components/constBtns'
 import { startCommand } from './commands/start'
 import { onText } from './ontext/onText'
 dotenv.config()
@@ -16,7 +15,7 @@ export const bot = new TgBot(token, {
 export const commands = [{command: "start", description: 'Запустить бота'}]
 export const setLessonsState: {[key: number]: string} = {}
 export const setLessonsInDb: {[key: number]: {day: string, id: number | null}} = {}
-export const setLessonsCreatedState: {[key: number]: string} = {}
+export const setLessonsAreCreated: {[key: number]: string} = {}
 
 export const startBtns = ['Установить расписание', 'Cледующий урок', "Сколько уроков прошло"]
 export const dayOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
