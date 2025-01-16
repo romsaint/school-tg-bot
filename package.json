@@ -1,0 +1,22 @@
+{
+  "name": "school-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn tsc",
+    "start": "nodemon dist/index.js",
+    "dev": "nodemon --watch src --ext ts --exec \"yarn build && yarn start\""
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-telegram-bot-api": "^0.66.0",
+    "nodemon": "^3.1.9",
+    "pg": "^8.13.1",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "@types/pg": "^8.11.10"
+  }
+}
