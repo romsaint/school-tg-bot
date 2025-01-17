@@ -22,22 +22,65 @@ export async function startCommand(msg: TelegramBot.Message) {
         if (lessons.length > 0) {
             const date = await getStartLessons();
             let d = new Date(date);
-            let d2 = new Date(date);
+            let dateNow = new Date(); // Текущее время
 
-            let scheduleText = `\`\`\`\n📅Уроки на сегодня\n\`\`\`\n`;
+            let scheduleText = `\`\`\`\n📅 Уроки на сегодня\n\`\`\`\n`;
+
+            let currentLesson = null; // Текущий урок
+            let nextLesson = null; // Следующий урок
+            let remainingTime = ''; // Оставшееся время
 
             for (let i = 0; i < lessons.length; i++) {
+                const d2 = new Date(d.getTime() + lessons[i].lesson_time * 60000); // Время окончания урока
+                let timeStart = d.toLocaleTimeString().slice(0, 5); // Время начала урока
+                let timeEnd = d2.toLocaleTimeString().slice(0, 5); // Время окончания урока
+                let lesson = lessons[i].lesson.toUpperCase(); // Название урока
+
+                let [hours, minutes] = timeStart.split(':').map(Number);
+                let dateStart = new Date();
+                dateStart.setHours(hours);
+                dateStart.setMinutes(minutes);
+
+                let [endHours, endMinutes] = timeEnd.split(':').map(Number);
+                let dateEnd = new Date();
+                dateEnd.setHours(endHours);
+                dateEnd.setMinutes(endMinutes);
+
+                // Проверяем, идет ли сейчас этот урок
+                if (dateNow >= dateStart && dateNow <= dateEnd) {
+                    currentLesson = lesson;
+                    let diffInMilliseconds = dateEnd.getTime() - dateNow.getTime(); // Оставшееся время урока
+                    console.log(diffInMilliseconds, lesson, i)
+                    let diffInMinutes = Math.floor(diffInMilliseconds / 60000); // Переводим в минуты
+                    remainingTime = `⏳ Осталось ${diffInMinutes} минут до конца ${currentLesson}`;
+
+                    // Если есть следующий урок, добавляем его в текст
+                    if (i < lessons.length - 1) {
+                        nextLesson = lessons[i + 1].lesson.toUpperCase();
+                    }
+                }
+
+                // Формируем расписание
                 if (i === 1 || i === 2) {
-                    scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${new Date(d2.setMinutes(d.getMinutes() + 40)).toLocaleTimeString().slice(0, 5)}, перемена ${20} минут\n`;
-                    d.setMinutes(d.getMinutes() + 40 + 20);
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${20} минут\n`;
+                    d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 20); // Урок + перемена
                 } else if (i === 3) {
-                    scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${new Date(d2.setMinutes(d.getMinutes() + 40)).toLocaleTimeString().slice(0, 5)}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
-                    d.setMinutes(d.getMinutes() + 40 + 10);
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
+                    d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
                 } else {
-                    scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${new Date(d2.setMinutes(d.getMinutes() + 40)).toLocaleTimeString().slice(0, 5)}, перемена ${10} минут\n`;
-                    d.setMinutes(d.getMinutes() + 40 + 10);
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n`;
+                    d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
                 }
             }
+
+            // Добавляем информацию о текущем уроке
+            if (remainingTime) {
+                scheduleText += `\n\`\`\`${remainingTime}\`\`\`\n`;
+                if (nextLesson) {
+                    scheduleText += `\`\`\`Следующий ${nextLesson.toUpperCase()}\`\`\`\n`;
+                }
+            }
+
 
             constBtns(msg, text)
             await bot.sendMessage(chatId, scheduleText, {

@@ -1,9 +1,15 @@
 import TelegramBot from "node-telegram-bot-api"
-import { bot, setLessonsInDb } from "../.."
+import { backChooseLessonState, bot, setLessonsInDb } from "../.."
 import { constBtns } from "../../commands/components/constBtns"
+import { setHomework } from "./setHomework"
 
 export async function onBack(msg: TelegramBot.Message) {
     try{
+        if(backChooseLessonState[msg.chat.id]) {
+            setHomework(msg)
+            return
+        }
+
         setLessonsInDb[msg.chat.id] = { day: '', id: null }
         constBtns(msg, 'Главное меню')
         return

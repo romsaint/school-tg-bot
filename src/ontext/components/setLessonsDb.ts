@@ -12,7 +12,6 @@ export async function setLessonsDb(msg: TelegramBot.Message) {
 
     for (let i = 0; i < schedule.length; i++) {
         if(schedule[i].trim()) {
-            console.log(day)
             await client.query(`
                 INSERT INTO lessons (user_id, lesson, lesson_time, day_of_week)
                 VALUES ($1, $2, $3, $4)

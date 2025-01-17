@@ -42,19 +42,22 @@ export async function scheduleOfWeek(msg: TelegramBot.Message) {
 
         for (let i = 0; i < lessons.length; i++) {
             const d2 = new Date(d.getTime() + lessons[0].lesson_time * 60000);
+            let timeStart = d.toLocaleTimeString().slice(0, 5);
+            let lessonName = lessons[i].lesson.toUpperCase()
+            let timeEnd = d2.toLocaleTimeString().slice(0, 5)
 
             if (i === 1 || i === 2) {
                 // Уроки с 20-минутной переменой
-                scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${d2.toLocaleTimeString().slice(0, 5)}, перемена ${20} минут\n`;
-                d.setMinutes(d.getMinutes() + 40 + 20); // Урок + перемена
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${20} минут\n`;
+                d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 20); // Урок + перемена
             } else if (i === 3) {
                 // Урок с 10-минутной переменой и столовой
-                scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${d2.toLocaleTimeString().slice(0, 5)}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
-                d.setMinutes(d.getMinutes() + 40 + 10); // Урок + перемена
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
+                d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
             } else {
                 // Остальные уроки с 10-минутной переменой
-                scheduleText += `\`\`\`${i + 1}. ${lessons[i].lesson.toUpperCase()}\`\`\`\n🕒 С ${d.toLocaleTimeString().slice(0, 5)} - ${d2.toLocaleTimeString().slice(0, 5)}, перемена ${10} минут\n`;
-                d.setMinutes(d.getMinutes() + 40 + 10); // Урок + перемена
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n`;
+                d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
             }
         }
 

@@ -16,8 +16,12 @@ export const commands = [{command: "start", description: 'Запустить б�
 export const setLessonsState: {[key: number]: string} = {}
 export const setLessonsInDb: {[key: number]: {day: string, id: number | null}} = {}
 export const setLessonsAreCreated: {[key: number]: string} = {}
+export const setHomeworkState: {[key: number]: string} = {}
+export const chooseLessonState: {[key: number]: string} = {}
 
-export const startBtns = ['Установить расписание', 'Cледующий урок', "Сколько уроков прошло"]
+export const backChooseLessonState: {[key: number]: string} = {}
+
+export const startBtns = ['Установить расписание', 'Cледующий урок', 'Установить домашнее задание']
 export const dayOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
 
 bot.setMyCommands(commands)
