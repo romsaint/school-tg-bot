@@ -1,6 +1,5 @@
 import TelegramBot from "node-telegram-bot-api"
 import { bot, homeworkOnLessonState, sethomeworToDbState } from "../.."
-import { setDayHomework } from "../../ontext/components/setDayHomework"
 
 export async function onCbQuery(query: TelegramBot.CallbackQuery) {
     if(homeworkOnLessonState[query.from.id] && query.data) {

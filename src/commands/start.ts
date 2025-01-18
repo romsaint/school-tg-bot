@@ -10,7 +10,7 @@ export async function startCommand(msg: TelegramBot.Message) {
         const chatId = msg.chat.id
         const text = `Это бот, который поможет вам с расписанием уроков. Он будет напоминать, когда какой урок и когда перемена. `
 
-        const dayIdx = new Date().getDay() - 1;
+        const dayIdx = /* new Date().getDay() - 1*/ 1;
         const day = dayOfWeek[dayIdx];
 
         const lessons: Lessons[] = (await client.query(`
@@ -23,7 +23,7 @@ export async function startCommand(msg: TelegramBot.Message) {
             let d = new Date(date);
             let dateNow = new Date(); // Текущее время
 
-            let scheduleText = `\`\`\`\n📅 Уроки на сегодня\n\`\`\`\n`;
+            let scheduleText = `\`\`\`\n📅 Уроки на сегодня\n\`\`\``;
 
             let currentLesson = null; // Текущий урок
             let nextLesson = null; // Следующий урок
@@ -61,13 +61,13 @@ export async function startCommand(msg: TelegramBot.Message) {
 
                 // Формируем расписание
                 if (i === 1 || i === 2) {
-                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${20} минут\n`;
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}, домашнее задание: ${lessons[i].homework}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, \`перемена ${20} минут\`\n`;
                     d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 20); // Урок + перемена
                 } else if (i === 3) {
-                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}, домашнее задание: ${lessons[i].homework}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, \`перемена ${10} минут\`\n🍽 После этого урока *столовая*\n`;
                     d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
                 } else {
-                    scheduleText += `\`\`\`${i + 1}. ${lesson}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n`;
+                    scheduleText += `\`\`\`${i + 1}. ${lesson}, домашнее задание: ${lessons[i].homework}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, \`перемена ${10} минут\`\n`;
                     d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
                 }
             }
@@ -80,8 +80,6 @@ export async function startCommand(msg: TelegramBot.Message) {
                 }
             }
 
-
-            constBtns(msg, text)
             await bot.sendMessage(chatId, scheduleText, {
                 parse_mode: "Markdown"
             })
