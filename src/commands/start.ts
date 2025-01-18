@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { bot, dayOfWeek, setLessonsState } from "..";
+import { bot, dayOfWeek } from "..";
 import { constBtns } from "./components/constBtns";
 import { client } from "../db/main";
 import { Lessons } from "../db/entity/lessons.entity";
@@ -9,7 +9,6 @@ export async function startCommand(msg: TelegramBot.Message) {
     try {
         const chatId = msg.chat.id
         const text = `Это бот, который поможет вам с расписанием уроков. Он будет напоминать, когда какой урок и когда перемена. `
-        setLessonsState[chatId] = 'ready'
 
         const dayIdx = new Date().getDay() - 1;
         const day = dayOfWeek[dayIdx];
