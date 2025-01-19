@@ -1,5 +1,4 @@
 import TelegramBot from "node-telegram-bot-api";
-import { Lessons } from "../../db/entity/lessons.entity";
 import { client } from "../../db/main";
 import { backChooseLessonState, bot, chooseLessonState } from "../..";
 

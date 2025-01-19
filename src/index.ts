@@ -2,7 +2,6 @@ import TgBot from 'node-telegram-bot-api'
 import dotenv from 'dotenv'
 import { startCommand } from './commands/start'
 import { onText } from './ontext/onText'
-import { client } from './db/main'
 import { onCbQuery } from './commands/query/onCallbackQuery'
 dotenv.config()
 
@@ -24,7 +23,7 @@ export const sethomeworToDbState: {[key: number]: {ready: string, id: string}} =
 
 export const backChooseLessonState: {[key: number]: string} = {}
 
-export const startBtns = ['Установить расписание', 'Cледующий урок', 'Установить домашнее задание']
+export const startBtns = ['Установить расписание', 'Расписание на неделю', 'Установить домашнее задание']
 export const dayOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
 
 bot.setMyCommands(commands)

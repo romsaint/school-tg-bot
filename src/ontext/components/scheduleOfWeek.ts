@@ -11,6 +11,7 @@ export async function scheduleOfWeek(msg: TelegramBot.Message) {
     const schedule: Lessons[] = (await client.query(`
         SELECT * FROM lessons
         WHERE user_id = $1
+        ORDER BY day_of_week 
     `, [msg.from?.id])).rows;
 
     // Группируем уроки по дням недели
@@ -23,7 +24,6 @@ export async function scheduleOfWeek(msg: TelegramBot.Message) {
         }
         groupedSchedule[day].push(lesson); // Добавляем урок в соответствующий день
     }
-
 
     if (schedule.length === 0) {
         await bot.sendMessage(chatId, 'На сегодня у вас нет уроков');
@@ -48,15 +48,15 @@ export async function scheduleOfWeek(msg: TelegramBot.Message) {
 
             if (i === 1 || i === 2) {
                 // Уроки с 20-минутной переменой
-                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${20} минут\n`;
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}${!lessons[i].homework ? ' - Не задано' :` - ${lessons[i].homework}` }\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${20} минут\n`;
                 d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 20); // Урок + перемена
             } else if (i === 3) {
                 // Урок с 10-минутной переменой и столовой
-                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}${!lessons[i].homework ? ' - Не задано' :` - ${lessons[i].homework}` }\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n🍽 После этого урока *столовая*\n`;
                 d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
             } else {
                 // Остальные уроки с 10-минутной переменой
-                scheduleText += `\`\`\`${i + 1}. ${lessonName}\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n`;
+                scheduleText += `\`\`\`${i + 1}. ${lessonName}${!lessons[i].homework ? ' - Не задано' :` - ${lessons[i].homework}` }\`\`\`\n🕒 С ${timeStart} - ${timeEnd}, перемена ${10} минут\n`;
                 d.setMinutes(d.getMinutes() + lessons[i].lesson_time + 10); // Урок + перемена
             }
         }

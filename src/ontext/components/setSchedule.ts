@@ -2,7 +2,7 @@ import TelegramBot from "node-telegram-bot-api"
 import { Lessons } from "../../db/entity/lessons.entity"
 import { client } from "../../db/main"
 import { bot, dayOfWeek, setLessonsAreCreated, setLessonsInDb } from "../.."
-import test from "node:test"
+
 
 
 export async function setSchedule(msg: TelegramBot.Message) {

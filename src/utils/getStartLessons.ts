@@ -2,7 +2,7 @@ export async function getStartLessons(dayPlus?: number, minutesToAdd: number = 0
     const now = new Date();
 
     // Устанавливаем время на 8:30 сегодняшнего дня
-    now.setHours(19, 40, 0, 0);
+    now.setHours(8, 30, 0, 0);
 
     // Прибавляем дни, если указано
     if (dayPlus) {

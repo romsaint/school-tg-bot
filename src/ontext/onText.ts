@@ -1,13 +1,11 @@
 import TelegramBot from "node-telegram-bot-api";
-import { bot, chooseLessonState, dayOfWeek, homeworkOnLessonState, sethomeworToDbState, setLessonsInDb } from "..";
+import { bot, chooseLessonState, dayOfWeek, sethomeworToDbState, setLessonsInDb } from "..";
 import { setSchedule } from "./components/setSchedule";
 import { setLessonsDb } from "./components/setLessonsDb";
 import { onBack } from "./components/onBack";
 import { scheduleOfWeek } from "./components/scheduleOfWeek";
 import { setDayHomework } from "./components/setDayHomework";
 import { chooseLesson } from "./components/chooseLesson";
-import { client } from "../db/main";
-import { lessonsToChoose } from "../utils/lessonsToChoose";
 import { setHomeworkToDb } from "./components/setHomeworrkToDb";
 
 

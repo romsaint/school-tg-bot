@@ -1,7 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
 import { backChooseLessonState, bot, chooseLessonState, homeworkOnLessonState } from "../..";
-import { Lessons } from "../../db/entity/lessons.entity";
-import { client } from "../../db/main";
 import { lessonsToChoose } from "../../utils/lessonsToChoose";
 
 export async function chooseLesson(msg: TelegramBot.Message, text: string) {
